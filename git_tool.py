@@ -51,8 +51,12 @@ def get_repo_commits(username, repo, branch="main"):
     
     if response.status_code == 200:
         data = response.json()
-        if data and len(data) > 0:
-            print(f"{repo} has '{len(data)}' commits")
+        if data:
+            print(f"\n{repo} has '{len(data)}' commits:\n")
+            for num, commit in enumerate(data, start=1):
+                author = commit['commit']['author']['name']
+                message = commit['commit']['message']
+                print(f"{num}- {author} : {message}")
         else:
             print(f"{repo} has no commits")
     else:
