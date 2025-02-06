@@ -1,3 +1,7 @@
+Here’s the updated `README.md` file with the inclusion of the `requirements.txt` and instructions for setting it up:
+
+---
+
 # GitHub CLI Tool
 
 This is a command-line tool that allows you to interact with the GitHub API. It provides functionality to retrieve user information, list repositories, search for repositories by keyword, and fetch commit details for a specific repository.
@@ -12,7 +16,8 @@ This is a command-line tool that allows you to interact with the GitHub API. It 
 4. [Usage](#usage)
 5. [Commands](#commands)
 6. [Environment Variables](#environment-variables)
-7. [Contributing](#contributing)
+7. [Requirements](#requirements)
+8. [Contributing](#contributing)
 
 ---
 
@@ -30,8 +35,7 @@ This is a command-line tool that allows you to interact with the GitHub API. It 
 Before using this tool, ensure you have the following installed:
 
 - Python 3.6 or higher
-- `requests` library (can be installed via pip)
-- `python-dotenv` library (for handling environment variables)
+- `pip` (Python package manager)
 
 ---
 
@@ -44,11 +48,15 @@ Before using this tool, ensure you have the following installed:
    cd github-cli-tool
    ```
 
-2. Install the required dependencies:
+2. Install the required dependencies using the `requirements.txt` file:
 
    ```bash
-   pip install requests python-dotenv
+   pip install -r requirements.txt
    ```
+
+   This will install the following packages:
+   - `requests==2.32.3`
+   - `python-dotenv==1.0.1`
 
 3. Create a `.env` file in the root directory and add your GitHub API token:
 
@@ -198,6 +206,21 @@ GIT_API_TOKEN=your_github_api_token_here
 ```
 
 You can obtain a personal access token from your GitHub account settings.
+
+---
+
+## Requirements
+
+The project depends on the following Python libraries:
+
+- `requests==2.32.3`: For making HTTP requests to the GitHub API.
+- `python-dotenv==1.0.1`: For loading environment variables from a `.env` file.
+
+These dependencies are listed in the `requirements.txt` file. To install them, run:
+
+```bash
+pip install -r requirements.txt
+```
 
 ---
 
