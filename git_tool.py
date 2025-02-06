@@ -42,7 +42,25 @@ def list_repos(username):
             print(f"{username} has no public repositories")
     else:
         print(f"Error: {response.josn().get('message', 'Uknown error')}")
+        
+def search_repos(username, repo_keyword):
+    """ Searches for repositories by keyword """
     
+    url = f"{GITHUB_API_URL}/users/{username}/repos"
+    response = requests.get(url, headers=get_headers())
+    
+    if response.status_code == 200:
+        data = response.json()
+        if data:
+            print(f"\nRepositories with keyword '{repo_keyword}':\n************")
+            for repo in data:
+                if repo_keyword.lower() in repo['name'].lower():
+                    print(f"- {repo['name']} ({repo['html_url']})")
+        else:
+            print(f"{username} has no public repositories")
+    else:
+        print(f"Error: {response.json().get('message', 'Unknown error')}") 
+        
 def get_repo_commits(username, repo, branch="main"):
     """ Fetch and display repo information """
     
@@ -76,10 +94,15 @@ def main():
     repo_parser = subparsers.add_parser("repos", help="List user repositories")
     repo_parser.add_argument("username", type=str, help="Github username")
     
-    # 
+    # Get commit information
     commit_parser = subparsers.add_parser("commits", help="Get the number of commits of a repo")
     commit_parser.add_argument("username", type=str, help="Github username")
     commit_parser.add_argument("repo", type=str, help="Name of the repository")
+    
+    # Get repo by keyword
+    search_parser = subparsers.add_parser("search", help="Search for a repository using keywords")
+    search_parser.add_argument("username", type=str, help="Owner of the repo")
+    search_parser.add_argument("keyword", type=str, help="Partial name of the repo")
 
     args = parser.parse_args()
     
@@ -89,6 +112,8 @@ def main():
         list_repos(args.username)
     elif args.command == "commits":
         get_repo_commits(args.username, args.repo)
+    elif args.command == "search":
+        search_repos(args.username, args.keyword)
     else:
         parser.print_help
 
