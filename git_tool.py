@@ -42,6 +42,21 @@ def list_repos(username):
             print(f"{username} has no public repositories")
     else:
         print(f"Error: {response.josn().get('message', 'Uknown error')}")
+    
+def get_repo_commits(username, repo, branch="main"):
+    """ Fetch and display repo information """
+    
+    url = f"{GITHUB_API_URL}/repos/{username}/{repo}/commits?sha={branch}"
+    response = requests.get(url, headers=get_headers())
+    
+    if response.status_code == 200:
+        data = response.json()
+        if data and len(data) > 0:
+            print(f"{repo} has '{len(data)}' commits")
+        else:
+            print(f"{repo} has no commits")
+    else:
+        print(f"Error: {response.json().get('message', 'Unknown error')}")
 
 def main():
 
@@ -53,8 +68,14 @@ def main():
     user_parser =subparsers.add_parser("user", help="Get Github user details")
     user_parser.add_argument("username", type=str, help="Github username")
 
+    # List all repositories
     repo_parser = subparsers.add_parser("repos", help="List user repositories")
     repo_parser.add_argument("username", type=str, help="Github username")
+    
+    # 
+    commit_parser = subparsers.add_parser("commits", help="Get the number of commits of a repo")
+    commit_parser.add_argument("username", type=str, help="Github username")
+    commit_parser.add_argument("repo", type=str, help="Name of the repository")
 
     args = parser.parse_args()
     
@@ -62,6 +83,8 @@ def main():
         get_user_info(args.username)
     elif args.command == "repos":
         list_repos(args.username)
+    elif args.command == "commits":
+        get_repo_commits(args.username, args.repo)
     else:
         parser.print_help
 
